@@ -13,8 +13,8 @@
 `docker exec -it <container_name> mysql -u root -p`
 <br>
 **2- Docker compose php app**
-This app using docker-compose
-to run this app locall
+- This app using docker-compose
+- to run this app locall
 <br>
 `cd docker_compose_php_app`
 <br>
