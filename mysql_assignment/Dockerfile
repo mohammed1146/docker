@@ -1,0 +1,12 @@
+FROM mysql:8.0.22
+
+VOLUME /var/lib/mysql
+
+ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_DATABASE=test
+ENV MYSQL_USER=test
+ENV MYSQL_PASSWORD=test
+
+#configure phpmyadmin
+
+EXPOSE 3306

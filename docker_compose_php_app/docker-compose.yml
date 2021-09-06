@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    container_name: nginx
+    ports:
+    - "80:80"
+    volumes:
+    - ./src:/var/www/html
+    networks:
+      - backend
+
+  mysql:
+    image: mysql:8.0.26
+    container_name: mysql
+    restart: unless-stopped
+    ports:
+    - "3306:3306"
+    volumes:
+    - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: laravel8
+      MYSQL_USER: user
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - backend
+
+  php:
+    build:
+       context: .
+       dockerfile: php/8.0/Dockerfile
+    container_name: php
+    volumes:
+    - ./src:/var/www/html
+    networks:
+      - backend
+
+  composer:
+    image: composer:2.0.14
+    container_name: mycomposer
+    volumes:
+    - ./src:/var/www/html
+    working_dir: /var/www/html
+    entrypoint: ['composer']
+    depends_on:
+      - php
+    networks:
+      - backend
+
+volumes:
+  mysql_data:
+
+networks:
+  backend:
+    driver: bridge
