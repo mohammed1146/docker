@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: nginx/Dockerfile
-    container_name: nginx
+    container_name: php_nginx
     ports:
     - "80:80"
     volumes:
@@ -15,10 +15,11 @@ services:
 
   mysql:
     image: mysql:8.0.26
-    container_name: mysql
+    container_name: php_mysql
     restart: unless-stopped
     ports:
     - "3306:3306"
+    #hostname: 127.0.0.1
     volumes:
     - mysql_data:/var/lib/mysql
     environment:
@@ -26,14 +27,13 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: secret
       MYSQL_ROOT_PASSWORD: root
-    networks:
-      - backend
+    network_mode: host
 
   php:
     build:
        context: .
        dockerfile: php/8.0/Dockerfile
-    container_name: php
+    container_name: php_php
     volumes:
     - ./src:/var/www/html
     networks:
@@ -41,7 +41,7 @@ services:
 
   composer:
     image: composer:2.0.14
-    container_name: mycomposer
+    container_name: php_mycomposer
     volumes:
     - ./src:/var/www/html
     working_dir: /var/www/html
